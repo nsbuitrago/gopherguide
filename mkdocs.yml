@@ -1,0 +1,32 @@
+site_name: Gopher Guide 
+theme:
+  name: material
+  palette: 
+    - scheme: default
+      primary: blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.indexes
+markdown_extensions:
+  - meta
+  - admonition
+  - footnotes
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - tables
+plugins:
+  - search
+  - roamlinks
+# roamlinks is installed using `pip3 install mkdocs-roamlinks-plugin
+# see also https://github.com/Jackiexiao/mkdocs-roamlinks-plugin
+
