@@ -26,11 +26,11 @@ func main() {
 }
 ```
 
-
-!!! note
-	Everything in Go is a package. Programs start running in the `main` package.
+Everything in Go is a package. Programs start running in the `main` package. A standard setup starts with `package main` at the top of the file.
 
 ## Imports
+
+We can group imports with parenthesis if more than one package is needed. Go has an extensive [standard library](https://pkg.go.dev/std) that you can use and import packages from without additional installation.
 
 ```go
 package main
