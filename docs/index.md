@@ -1,20 +1,34 @@
 # Gopher Guide
 
-This is meant to be a simple Go onramp and cheatsheet.
+This is meant to be a quick onramp / cheatsheet for busy people getting into Go.
 
-## Development Environment
+## 1. Setup
 
-### Installation
+**Installation (if necessary):**
 
-Approach #1: Install using homebrew (if on macOS or Linux) using the `brew install go` command.
+Approach 1: Install directly from [go.dev/dl](https://go.dev/dl)
 
-Approach #2: Install directly from [go.dev/dl](https://go.dev/dl)
+Approach 2 (Preferred, although only for macOS and Linux): Install using [Homebrew](https://brew.sh) using `brew install go` command.
 
-### Preferred Editors
-- [Goland](https://www.jetbrains.com/go/) (free license available to students and faculty by using academic email)
-- [VSCode](https://code.visualstudio.com/)
+- Install homebrew if necessary (copy and paste the following in your terminal to install or go to [brew.sh](https://brew.sh)for additional instruction)
 
-## Standard Setup
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+- Install Go with `brew install go` command.
+
+**Preferred Editors:**
+
+Now that you have Go, the next step is to setup your editor. I personally like to use [NeoVim](https://neovim.io), but it has a somewhat steep learning curve and can take considerable effort to setup if you are new to it.
+
+[Goland](https://jetbrains.com/go) is a great IDE for Go that I have also used and enjoyed. Unfortunately, this one costs some money, but you can get a free license if you are a university student or faculty.
+
+[VS Code](https://code.visualstudio.com) is another good alternative and is free. I would recommend installing the [official Go extension](https://marketplace.visualstudio.com/items?itemName=golang.go) for VS Code as well.
+
+## 2. The standard main.go
+
+Everything in Go is a package. Programs start running in the `main` package. The first line of any Go file should declare a package name.
 
 ```go
 package main
@@ -22,31 +36,100 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("gophers are cool")
+	fmt.Println("Gophers are cool")
 }
 ```
 
-Everything in Go is a package. Programs start running in the `main` package. A standard setup starts with `package main` at the top of the file.
-
-## Imports
-
-We can group imports with parenthesis if more than one package is needed. Go has an extensive [standard library](https://pkg.go.dev/std) that you can use and import packages from without additional installation.
+## 3. Imports
 
 ```go
 package main
 
-// we can group imports with parenthesis if more than one package is needed (factored imports)
 import (
 	"fmt"
 	"math/rand"
-) 
+) // import multiple packages by enclosing with ()
 
 func main() {
-	fmt.Println(rand.Intn(10)) // print a random number between 0-9
+	fmt.Println(math.randIntn(10)) //print a random int betwee 0-9
 }
 ```
 
-## Functions
+## 4. Data types and variables
+
+Go has standard types like:
+
+* bool
+* string
+* int, int8, int16, int32, int64
+* uint, uint8, uint16, uint32, uint64, uintpr
+* byte (int8)
+* rune (int32, unicode code point)
+* float32, float64
+* complex64, complex128
+
+```go
+package main
+
+import "fmt"
+
+var numGophers int = 0
+
+func main() {
+	// declare and init var with type bool
+	var isGopher bool = false
+	// we can also use a shorthand notation using :=
+	isHuman := true // this will infer a type from the initializer
+
+	fmt.Printf("Value: %v, Type: %T", numGophers, numGophers)
+	fmt.Printf("Value: %v, Type: %T", isGopher, isGopher)
+	fmt.Printf("Value: %v, Type: %T", isHuman, isHuman)
+}
+```
+
+!!! note
+	We cannot use the shorthand notation with `:=` when declaring variables at the package level. At the package level, everything needs to start with a keyword like `var`, `func`, etc.
+
+### Constants and more
+
+```go
+package main
+
+import (
+	"fmt"
+	"runtime"
+)
+
+func main() {
+	// declare and init a constant variable
+	const pi float64 = 3.14
+	// declare a var without an initializer
+	var operatingSystem string // we can now use this later
+
+	fmt.Println(pi)
+	// set operatingSystem variable
+	operatingSystem = runtime.GOOS
+	fmt.Println(operatingSystem)
+}
+```
+
+### Type conversions
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	i := 77
+	j := float64(i) // convert i of type int to float64 
+	
+	fmt.Printf("value: %d, type: %T", i, i) // will be an int
+	fmt.Printf("value: %d, type: %T", j, j) // will be float64
+}
+```
+
+## 5. Functions
 
 ```go
 package main
@@ -82,44 +165,16 @@ func main() {
 	howdyGophers := greeting("gophers")
 	a, b := sum(22, 33, 44)
 	bigGopher := formatName("gopher")
-	
 }
-
 ```
+
 
 !!! note
-	In the last example we only included the `int` type after the last param. You can use this syntax when params are of the same type. For different types it would look something like `func hello(name string, age int)...`
+	In `sum(x, y, z int)` we only included the `int` type after the last param. You can use this syntax when params are of the same type. For different types it would look something like `func hello(name string, age int)...`
 
-## Variables
+## 6. Looping and Conditional Logic
 
-```go
-package main
-
-var isValid bool // package level variable
-
-func main() {
-	var i int // function level variable
-	fmt.Println(i, isValid)
-}
-```
-
-### Initializers
-
-```go
-pacakge main
-
-import "fmt"
-
-func main() {
-	var i, j, k int = 101, 102, 103
-	fmt.Println(i, j, k)
-}
-```
-
-!!! tip
-	If an initializer is present, we can omit the type (i.e. `var i = 101`)
-
-### Shorthand Declaration
+### For
 
 ```go
 package main
@@ -127,93 +182,15 @@ package main
 import "fmt"
 
 func main() {
-	name := "Kevin the Gopher"
-	fmt.Println(name)
-}
-```
-
-!!! note
-	This shorthand syntax can be used at the function level. At the package level the `var` keyword is needed for variables (the `:=` is not available)
-
-## Data types
-
-Go has standard types like:
-
-* bool
-* string
-* int, int8, int16, int32, int64
-* uint, uint8, uint16, uint32, uint64, uintpr
-* byte (int8)
-* rune (int32, unicode code point)
-* float32, float64
-* complex64, complex128
-
-!!! note
-	`int`, `unit`, and `uintpr` are typically 32 bits wide on. 32-bit systems and 64 bits wide on 64-bit systems. You should use `int` when you need an integer value unless their is a specific reason to use a sized on unsigned integer
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-	var isMac bool
-	fmt.Printf("value: %v, type %T\n", isMac, isMac)
-}
-```
-
-### Type conversions
-
-Type conversions are done similarly to other languages
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-	i := 77
-	j := float64(77)
-	fmt.Printf("value: %v, type: %T", i, i)
-	fmt.Printf("value: %v, type: %T", j, j)
-}
-```
-
-### Constants
-
-Constants can be defined the same as variables, but with the `const` keyword
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-	const pi float64 = 3.14
-	fmt.Println(pi)
-}
-```
-
-!!! note
-	You can't use the `:=` operator syntax for constants
-
-## Looping
-
-In Go, we only have a `for` loop.
-
-```go
-package main
-
-import "fmt"
-
-func main() {
+	var z float64
 	for i := 0; i < 10; i++ {
-		fmt.Println(i)
+		z = i*i
+		fmt.Println(z)
 	}
 }
 ```
 
-For loops are broken down into 3 parts:
+In Go, we only have a `for` loop. For loops are broken down into 3 parts:
 
 1. The init statement which is executed before the first iteration (i.e. `i := 0`)
 
@@ -221,7 +198,7 @@ For loops are broken down into 3 parts:
 
 3. The post statement which is executed at the end of each iteration (i.e. `i++`)
 
-Init and post statements are optional in Go
+Init and post statements on a loop are optional, i.e.
 
 ```go
 package main
@@ -237,7 +214,7 @@ func main() {
 }
 ```
 
-This is like a while loop in other languages. What happens if you don't write a condition? You write an infinite loop...
+**The infinite loop**
 
 ```go
 package main
@@ -253,8 +230,7 @@ func main() {
 }
 ```
 
-
-## If
+### If
 
 ```go
 package main
@@ -271,7 +247,7 @@ func main() {
 }
 ```
 
-The short If
+**The short if**
 
 ```go
 package main
@@ -287,9 +263,10 @@ func main() {
 		fmt.Println(greeting)
 	}
 }
+
 ```
 
-## Switch
+### Switch
 
 ```go
 package main
@@ -309,5 +286,5 @@ func main() {
 		fmt.Println("I want better for you")
 	}
 }
-```
 
+```
