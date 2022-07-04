@@ -138,14 +138,15 @@ func main() {
 ## Data types
 
 Go has standard types like:
-- bool
-- string
-- int, int8, int16, int32, int64
-- uint, uint8, uint16, uint32, uint64, uintpr
-- byte (int8)
-- rune (int32, unicode code point)
-- float32, float64
-- coomplex64, complex128
+
+* bool
+* string
+* int, int8, int16, int32, int64
+* uint, uint8, uint16, uint32, uint64, uintpr
+* byte (int8)
+* rune (int32, unicode code point)
+* float32, float64
+* complex64, complex128
 
 !!! note
 	`int`, `unit`, and `uintpr` are typically 32 bits wide on. 32-bit systems and 64 bits wide on 64-bit systems. You should use `int` when you need an integer value unless their is a specific reason to use a sized on unsigned integer
@@ -213,8 +214,11 @@ func main() {
 ```
 
 For loops are broken down into 3 parts:
+
 1. The init statement which is executed before the first iteration (i.e. `i := 0`)
+
 2. The condition statement which is evaluated before each iteration (i.e. `i < 10`)
+
 3. The post statement which is executed at the end of each iteration (i.e. `i++`)
 
 Init and post statements are optional in Go
@@ -298,11 +302,11 @@ import (
 func main() {
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		fmt.Println("Gophers running a reasonable OS")
+		fmt.Println("Reasonable")
 	case "linux":
-		fmt.Println("Gophers running the superior OS")
+		fmt.Println("The superior OS")
 	default:
-		fmt.Println("Gophers running the wrong OS")
+		fmt.Println("I want better for you")
 	}
 }
 ```
