@@ -104,11 +104,11 @@ func main() {
 	// declare and init a constant variable
 	const pi float64 = 3.14
 	// declare a var without an initializer
-	var operatingSystem string // we can now use this later
+	var os string // we can now use this later
 
 	fmt.Println(pi)
 	// set operatingSystem variable
-	operatingSystem = runtime.GOOS
+	os = runtime.GOOS
 	fmt.Println(operatingSystem)
 }
 ```
@@ -172,7 +172,7 @@ func main() {
 !!! note
 	In `sum(x, y, z int)` we only included the `int` type after the last param. You can use this syntax when params are of the same type. For different types it would look something like `func hello(name string, age int)...`
 
-## 6. Looping and Conditional Logic
+## 6. Looping, Conditionals, Switches, & Defers
 
 ### For
 
@@ -288,3 +288,113 @@ func main() {
 }
 
 ```
+
+!!! tip
+	Switch with no condition is the same as `switch true` which can be useful for long if-else chains.
+
+### Defer
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	out, _ := os.Create("importantData.txt")
+	defer out.Close() // close file executed after main return
+	out.Write([]byte("867-5309"))
+}
+```
+
+!!! note
+	Deffered functions are pushed onto a stack and executed in last-in-first-out order.
+
+
+### 7. Pointers
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var i *int // pointer
+	j := 11
+	i = &j // generate pointer to operand
+	fmt.Printf("address, %v\n", i)
+	fmt.Printf("value, %v\n", *i)
+}
+```
+
+### 8. Structs
+
+```go
+package main
+
+import "fmt"
+
+type Coordinate struct {
+	X, Y, Z int
+}
+
+func main() {
+	origin := Coordinate{0, 0, 0}
+	fmt.Println(origin)
+	fmt.Printf("x: \n", origin.X)
+}
+```
+
+### 9. Arrays
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := [5]int{0, 1, 2, 3, 4}
+	fmt.Println(a[0], a[1])
+	fmt.Println(a[2:])
+}
+```
+
+!!! note
+	Arrays are of fixed size!
+
+### 10. Slices
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := [5]int{0, 1, 2, 3, 4}
+	var s []int = a[0:2]
+	fmt.Printf("s: %v, len: %d, cap: %d\n", s, len(s), cap(s))
+}
+```
+
+!!! note
+	A slice has a length and capacity. Length is the number of elements it contains, while the capacity is the number of elements in the underlying array.
+
+**Creating a slice with make**
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	s := make([]int, 5) // allocate a zeroed array w/ len(s)=10
+	c := make([]int, 5, 10) // allocate a zeroed array w/ len(c)=5, cap(c)=10
+	fmt.Printf("len: %d, cap: %d\n", s, len(s), cap(s))
+	fmt.Printf("len: %d, cap: %d\n", s, len(c), cap(c))
+}
+```
+
+**Appending to a slice**
+
